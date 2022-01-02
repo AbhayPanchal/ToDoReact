@@ -1,0 +1,281 @@
+<!--"StAuth10244: I Abhay Panchal, 000813104 certify that this material is my original work. 
+    No other person's work has been used without due acknowledgement. 
+    I have not made my work available to anyone else." -->
+
+<!--Dice Game using React JS-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game With React!</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <!-- Style for the webpage! -->
+    <style>
+
+        body{
+            background-color: red; /* For browsers that do not support gradients */
+            background-image: linear-gradient(to right, red, orange, yellow, red, orange, yellow);
+        }
+
+        .p{
+            border: 3px solid white;
+            width: 50%;
+            text-align: center;
+            background-color: black;
+            color: white;
+            padding: 10px;
+            
+        }
+
+        .box{
+            border: 2px solid white;
+            /* width: 50%; */
+            text-align: center;
+            padding: 10px;
+            background-color: black;
+            color: white;
+        }
+
+        .buttonD{
+            margin-left: 20px;
+            margin-bottom: 10px;
+            padding-top: 5px;
+           
+        }
+        .buttonU{
+            margin-left: 50px;
+            margin-bottom: 10px;
+            padding-top: 5px;
+        }
+
+        .grid{
+            text-align: center;
+            display: grid;
+            width: 70%;
+            grid-gap: 10px;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        h1{
+            text-align: center;
+            width: 50%;
+        }
+
+        .roll{
+            text-align: center;
+            width: 35%;
+            margin-top: 15px;
+        }
+
+        .roll button{
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: 3px solid white;
+        }
+
+        .dice{
+            border-style: solid;
+        }
+
+        .sum{
+            border-style: solid;
+            padding: 50px;
+            
+        }
+
+        .side{
+            border-style: solid;
+        }
+
+        .a{
+            display: grid;
+            grid-template-columns: auto;
+            text-align: center;
+            width: 50%;
+        }
+
+        .b{
+            text-align: center;
+            width: 50%;
+        }
+
+        .g{
+            display: flex;
+            flex-wrap: wrap;
+            
+        }
+
+        .fl{
+            background-color: black;
+            color: white;
+            width: 30px;
+            margin: 10px;
+            text-align: center;
+            line-height: 35px;
+            font-size: 30px;
+            border-style: solid;
+        }
+
+        .q{
+            text-align: center;
+            width: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="container">
+
+    </div>
+
+    <script type="text/babel">
+
+        // Dice Component for the game
+
+        class Dice extends React.Component{
+            render() {return (
+                    <div className="g">
+                        <div className="fl">
+                            {this.props.num}
+                        </div>
+                    </div>
+                
+            )}
+        }
+
+        //RandomNum Component which use to generate random numbers and display them on the web page
+
+        class RandomNum extends React.Component{
+
+            constructor(props){
+                super(props);
+            
+
+            this.state = {
+                numOfDice :1,
+                numOfSides : 6,
+                randomNum :[],
+                sumRandom : 0
+            };
+
+        }
+
+        //functions to perform increment and decrement functionality 
+            downDice()
+            {   
+                if(this.state.numOfDice > 1){
+                    this.setState({numOfDice : this.state.numOfDice - 1})
+                }
+            }
+
+            upDice()
+            {
+                this.setState({numOfDice : this.state.numOfDice + 1})
+            }
+
+            downSide()
+            {   
+                if(this.state.numOfSides > 2){
+                    this.setState({numOfSides : this.state.numOfSides -1})
+                }
+            }
+
+            upSide()
+            {
+                this.setState({numOfSides : this.state.numOfSides + 1})
+            }
+
+            //generateNum function which generates random numbers
+            generatNum(){
+                let numbers = [];
+
+                let sum = 0;
+
+                for(let i = 0; i < this.state.numOfDice; i++){
+                    let num_side = Math.floor(Math.random() * this.state.numOfSides)+1;
+
+                    numbers[i] = {key : i,
+                                    number : num_side};
+
+                    sum += num_side;
+                }
+
+                this.setState({randomNum : numbers, sumRandom : sum});
+                //console.log(randomNum.map());
+
+            }
+            
+            //show random numbers
+            showNum(num){
+                return <Dice key = {num.key} num = {num.number}/>
+            }
+
+            render() {
+                    let displyNum =(
+                        <div>
+                            <h2 className="q">Numbers on Dice:</h2>
+                            <div className="g">
+                                {this.state.randomNum.map(this.showNum)}
+                            </div>
+                        </div>
+                    )
+                return (
+                    <div>
+                        <h1> Dice Game </h1>
+                        <br /> <br />
+                        <div className="grid">
+                            <div className="dice">
+                                <h3 >Number of Dice: </h3>
+                                <br />
+                                <span className="box"> {this.state.numOfDice}</span>
+
+                                <button className="buttonD" onClick= {this.downDice.bind(this)}>  &#8595; </button>
+                                <br />
+                                <button className="buttonU" onClick= {this.upDice.bind(this)}> &#8593;  </button>
+                                <br />
+                            </div>
+                            <div className="side">
+                                <h3>Number of Sides: </h3>
+                                <br />
+                                <span className="box"> {this.state.numOfSides}</span>
+                                <button className="buttonD" onClick= {this.downSide.bind(this)}>  &#8595; </button>
+                                <br />
+                                <button className="buttonU" onClick= {this.upSide.bind(this)}> &#8593; </button>
+                                <br/>
+                            </div>
+                            <div>
+                                <h3 className="sum" className="p">Total Sum : {this.state.sumRandom}</h3>
+                            </div>
+                        </div>
+                        <div className="roll">
+                            <button onClick = {this.generatNum.bind(this)}>Roll the dice!</button>
+                        </div>
+                        <br />
+                        {displyNum}
+                        <br />
+                        <br/>
+                    </div>
+
+            )}
+        }
+
+        //rendering the main component!
+        ReactDOM.render(
+            
+            <div>
+                <RandomNum />
+                
+            </div>
+            ,document.getElementById("container")
+        );
+
+    </script>
+    
+</body>
+</html>
